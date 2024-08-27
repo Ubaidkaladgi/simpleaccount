@@ -33,6 +33,7 @@ import Graph from "../componants/Diagrams/Graph";
 import { getCompanyDetails } from "../login/Action";
 import CountryDetails from "../countryDetails/countryDetails";
 import Contact from "../Contact/Contact";
+import Product from "../Product/Product";
  
 const { Header, Content, Sider, Footer } = Layout;
  
@@ -79,6 +80,7 @@ const items2 = [
     label: "Tables",
     children: [{ key: "6", label: " Currency" },
       { key: "8", label: "Country" },
+      
     ],
   },
   {
@@ -86,6 +88,7 @@ const items2 = [
     icon: <ContainerOutlined />,
     label: "Master",
     children: [{ key: "9", label: "Contact" },
+      { key: "10", label: "Product" },
     ],
   },
 ];
@@ -336,6 +339,9 @@ const Dashboard = () => {
             </div>
             <div className="content">
               {activeMenuKey === "9" ? <><Contact/></> : ""}
+            </div>
+            <div className="content">
+              {activeMenuKey === "10" ? <><Product/></> : ""}
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
