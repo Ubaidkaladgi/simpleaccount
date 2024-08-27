@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Button,
-  Cascader,
   Checkbox,
-  ColorPicker,
-  DatePicker,
   Form,
   Input,
-  InputNumber,
   Radio,
   Select,
-  Slider,
-  Switch,
-  TreeSelect,
-  Upload,
-  Modal,
-  Row,
-  Col,
+  Modal
 } from "antd";
 import {
   getActiveCurrencyConversion,
@@ -30,7 +19,7 @@ import {
 } from "./Action";
 
 const CreateContactModal = () => {
-  const [componentDisabled, setComponentDisabled] = useState(true);
+  const [componentDisabled, setComponentDisabled] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [form] = Form.useForm();
@@ -39,39 +28,10 @@ const CreateContactModal = () => {
   const [statelist, setstatelist] = useState([]);
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
+  const [isAddressSame, setIsAddressSame] = useState(false); 
 
 
   const onFinish = async (obj) => {
-    const {
-      firstname,
-      middlename,
-      lastname,
-      contacttype,
-      organizationname,
-      email,
-      currency,
-      telephone,
-      mobilenumber,
-      companywebsite,
-      taxtreatment,
-      taxtreatmentnumber,
-      billingaddress,
-      billingcountry,
-      billingstate,
-      billingemail,
-      billingcity,
-      billingpoboxnumber,
-      billingtelephone,
-      billingfax,
-      shippingaddress,
-      shippingcountry,
-      shippingstate,
-      shippingcity,
-      shippingpoboxnumber,
-      shippingtelephone,
-      shippingfax,
-    } = obj;
-
     try {
       await save(obj);
       message.success("Log in successfully");
@@ -158,7 +118,7 @@ const CreateContactModal = () => {
       </Button>
       <Modal
         title={<p>Loading Modal</p>}
-        // footer={<></>}
+        footer={<></>}
         loading={loading}
         width={1200}
         open={open}
@@ -166,18 +126,18 @@ const CreateContactModal = () => {
         bodyStyle={{ padding: "20px", maxHeight: "70vh", overflowY: "auto" }}
       >
         <>
-          <Checkbox
+          {/* <Checkbox
             checked={componentDisabled}
             onChange={(e) => setComponentDisabled(e.target.checked)}
           >
             Form disabled
-          </Checkbox>
+          </Checkbox> */}
           <Form
             form={form}
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             layout="horizontal"
-            disabled={componentDisabled}
+            // disabled={componentDisabled}
             style={{ maxWidth: "100%" }}
             onFinish={onFinish}
           >
@@ -199,7 +159,7 @@ const CreateContactModal = () => {
             <div className="row">
               <div className="col-md-4">
                 <Form.Item
-                  name="firstname"
+                  name="firstName"
                   label={
                     <span>
                       First Name <span style={{ color: "red" }}>*</span>
@@ -213,13 +173,13 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Middle Name" name="middlename">
+                <Form.Item label="Middle Name" name="middleName">
                   <Input placeholder="Enter Middle Name" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="lastname"
+                  name="lastName"
                   label={
                     <span>
                       Last Name <span style={{ color: "red" }}>*</span>
@@ -239,7 +199,7 @@ const CreateContactModal = () => {
             <div className="row">
               <div className="col-md-4">
                 <Form.Item
-                  name="contacttype"
+                  name="contactType"
                   label={
                     <span>
                       Contact Type <span style={{ color: "red" }}>*</span>
@@ -257,7 +217,7 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item name="organizationname" label="Organization Name">
+                <Form.Item name="organization" label="Organization Name">
                   <Input placeholder="Enter Organization Name" />
                 </Form.Item>
               </div>
@@ -275,7 +235,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="currency"
+                  name="currencyCode"
                   label={
                     <span>
                       Currency <span style={{ color: "red" }}>*</span>
@@ -285,7 +245,7 @@ const CreateContactModal = () => {
                 >
                   <Select placeholder="Select currency">
                     {currency.map((option) => (
-                      <Select.Option key={option.currencyConversionId} value={option.currencyConversionId}>
+                      <Select.Option key={option.currencyCode} value={option.currencyCode}>
                         {option.currencyName}
                       </Select.Option>
                     ))}
@@ -298,18 +258,18 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Mobile Number" name="mobilenumber">
+                <Form.Item label="Mobile Number" name="mobileNumber">
                   <Input placeholder="Enter Mobile Number" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Company Website" name="companywebsite">
+                <Form.Item label="Company Website" name="website">
                   <Input placeholder="Enter Company Website" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="taxtreatment"
+                  name="taxTreatmentId"
                   label={
                     <span>
                       Tax Treatment <span style={{ color: "red" }}>*</span>
@@ -321,7 +281,7 @@ const CreateContactModal = () => {
                 >
                   <Select placeholder="Select Tax Treatment">
                     {taxTreatmentOptions.map((option) => (
-                      <Select.Option key={option.id} value={option.name}>
+                      <Select.Option key={option.id} value={option.id}>
                         {option.name}
                       </Select.Option>
                     ))}
@@ -330,7 +290,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="taxtreatmentnumber"
+                  name="vatRegistrationNumber"
                   label={
                     <span>
                       Tax Treatment Number
@@ -356,7 +316,7 @@ const CreateContactModal = () => {
             <div className="row">
               <div className="col-md-4">
                 <Form.Item
-                  name="billingaddress"
+                  name="addressLine1"
                   label={
                     <span>
                       Billing Address <span style={{ color: "red" }}>*</span>
@@ -374,7 +334,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="billingcountry"
+                  name="billingcountryId"
                   label={
                     <span>
                       Country <span style={{ color: "red" }}>*</span>
@@ -393,7 +353,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="billingstate"
+                  name="billingStateProvince"
                   label={
                     <span>
                       Emirate <span style={{ color: "red" }}>*</span>
@@ -411,18 +371,18 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Billing Email" name="billingemail">
+                <Form.Item label="Billing Email" name="billingEmail">
                   <Input placeholder="Enter Billing Email" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="City" name="billingcity">
+                <Form.Item label="City" name="city">
                   <Input placeholder="Enter City" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="billingpoboxnumber"
+                  name="billingPoBoxNumber"
                   label={
                     <span>
                       PO Box Number <span style={{ color: "red" }}>*</span>
@@ -436,12 +396,12 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Telephone" name="billingtelephone">
+                <Form.Item label="Telephone" name="billingTelephone">
                   <Input placeholder="Enter Telephone Number" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Fax" name="billingfax">
+                <Form.Item label="Fax" name="fax">
                   <Input placeholder="Enter Fax Number" />
                 </Form.Item>
               </div>
@@ -452,18 +412,21 @@ const CreateContactModal = () => {
               Shipping Address details
             </h4>
             <div className="col-md-4">
-              <Checkbox
-                style={{ paddingBottom: "5%" }}
-                // checked={componentDisabled}
-                onChange={(e) => setisAddressSame(e.target.checked)}
-              >
-                Same as Billing Address
-              </Checkbox>
+              <Form.Item name="isBillingandShippingAddressSame">
+                <Checkbox
+                  style={{ paddingBottom: "5%" }}
+                  checked={isAddressSame} // Control checkbox based on state
+                  onChange={(e) => setIsAddressSame(e.target.checked)} // Update state on change
+                  value={isAddressSame}
+                >
+                  Same as Billing Address
+                </Checkbox>
+              </Form.Item>
             </div>
             <div className="row">
               <div className="col-md-4">
                 <Form.Item
-                  name="shippingaddress"
+                  name="addressLine2"
                   label={
                     <span>
                       Shipping Address <span style={{ color: "red" }}>*</span>
@@ -481,7 +444,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="shippingcountry"
+                  name="shippingCountryId"
                   label={
                     <span>
                       Country <span style={{ color: "red" }}>*</span>
@@ -500,7 +463,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="shippingstate"
+                  name="shippingStateId"
                   label={
                     <span>
                       Emirate <span style={{ color: "red" }}>*</span>
@@ -518,13 +481,13 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="City" name="shippingcity">
+                <Form.Item label="City" name="shippingCity">
                   <Input placeholder="Enter City" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="shippingpoboxnumber"
+                  name="shippingPoBoxNumber"
                   label={
                     <span>
                       PO Box Number <span style={{ color: "red" }}>*</span>
@@ -538,16 +501,16 @@ const CreateContactModal = () => {
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Telephone" name="shippingtelephone">
+                <Form.Item label="Telephone" name="shippingTelephone">
                   <Input placeholder="Enter Telephone Number" />
                 </Form.Item>
               </div>
               <div className="col-md-4">
-                <Form.Item label="Fax" name="shippingfax">
+                <Form.Item label="Fax" name="shippingFax">
                   <Input placeholder="Enter Fax Number" />
                 </Form.Item>
               </div>
-              {/* <div
+              <div
                   className="row "
                   style={{
                     display: "flex",
@@ -555,9 +518,9 @@ const CreateContactModal = () => {
                     gap: "10px",
                   }}
                 >
-                    <Button className="col-md-2" type="primary">Create</Button>
+                    <Button className="col-md-2" type="primary" htmlType="submit">Create</Button>
                     <Button className="col-md-2" type="primary">Cancel</Button> 
-                </div> */}
+                </div>
             </div>
             <hr />
           </Form>
