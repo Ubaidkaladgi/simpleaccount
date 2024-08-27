@@ -1,0 +1,78 @@
+login.css
+
+.cardStyle {
+    width: 500px;
+    border-radius: 8px;
+    position: absolute;
+    height: 40rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-align: left;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+
+.cardBodyStyle {
+    margin: 20px auto;
+    padding: 20px;
+    width: auto;
+}
+
+.formStyle {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.forgotPasswordStyle {
+    display: block;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.registerStyle {
+    margin-top: 10px;
+}
+
+/* Additional Ant Design customization */
+.ant-input-affix-wrapper {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.ant-btn-primary {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    background-color: #1890ff;
+    border-color: rgb(24, 144, 255);
+    border-radius: 5px; /* Slight rounding for the button */
+}
+
+.ant-btn-primary:hover {
+    background-color: #40a9ff;
+    border-color: #40a9ff;
+}
+
+
+.heading{
+    width: 18px;
+    font-weight:bolder;
+}
+.tittle{
+    width: 300px;
+    padding-left: 3%;
+    font-size: larger;
+    /* font-weight: ; */
+}
+
+.login{
+    color: #1890ff;
+    font-weight: bolder;
+    font-size: x-large;
+    width: 18px;
+    padding-left: 5%;
+}
+
+

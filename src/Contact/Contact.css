@@ -1,0 +1,7 @@
+.form-container {
+    display: flex;
+    gap: 10px; /* Adjust space between fields as needed */
+}
+.form-item {
+    flex: 1;
+}
