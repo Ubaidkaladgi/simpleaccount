@@ -1,6 +1,6 @@
 .form-container {
     display: flex;
-    gap: 10px; /* Adjust space between fields as needed */
+    gap: 10px;
 }
 .form-item {
     flex: 1;

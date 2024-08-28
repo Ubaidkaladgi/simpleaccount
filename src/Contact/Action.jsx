@@ -84,15 +84,12 @@ export const getTaxTreatment = () => {
 export const save =  (obj) => {
     let data = {
         method: 'POST',
-        url: '/auth/token',
+        url: '/rest/contact/save',
         data: obj,
     };
-  return (
-      api(data)
+  return (  
+      authApi(data)
           .then((res) => {
-              window['localStorage'].setItem('accessToken', res.data.token);
-              window['localStorage'].setItem('language', 'en');
-              // console.log(res.data.token);
               return res;
           })
           .catch((err) => {
