@@ -9,8 +9,9 @@ import {
   getTaxTreatment,
   save,
 } from "./Action";
+import { EditOutlined } from "@ant-design/icons";
 
-const CreateContactModal = () => {
+const UpdateContactModal = () => {
   const [componentDisabled, setComponentDisabled] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
@@ -123,16 +124,12 @@ const CreateContactModal = () => {
       <Button
         type="primary"
         onClick={showLoading}
-        style={{
-          maxWidth: "150px",
-          marginLeft: "80%",
-          marginBottom: "1%",
-        }}
+         className="col-md-2"
       >
-        Add Contact
+       <EditOutlined />
       </Button>
       <Modal
-        title={<p>Add Contact</p>}
+        title={<p>Update Contact</p>}
         footer={<></>}
         loading={loading}
         width={1200}
@@ -555,4 +552,4 @@ const CreateContactModal = () => {
     </>
   );
 };
-export default CreateContactModal;
+export default UpdateContactModal;

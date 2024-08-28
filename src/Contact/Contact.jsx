@@ -1,85 +1,130 @@
-import React from 'react';
-import { Table, Button } from 'antd';
-import {ContactsOutlined } from  "@ant-design/icons";
-import ContactModal from './CreateContactModal';
-import CreateContactModal from './CreateContactModal';
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        sorter: true,
-        render: (name) => `${name.first} ${name.last}`,
-        width: '20%',
-      },
-  {
-    title: 'Chinese Score',
-    dataIndex: 'chinese',
-    sorter: {
-      compare: (a, b) => a.chinese - b.chinese,
-      multiple: 3,
-    },
-  },
-  {
-    title: 'Math Score',
-    dataIndex: 'math',
-    sorter: {
-      compare: (a, b) => a.math - b.math,
-      multiple: 2,
-    },
-  },
-  {
-    title: 'English Score',
-    dataIndex: 'english',
-    sorter: {
-      compare: (a, b) => a.english - b.english,
-      multiple: 1,
-    },
-  },
-];
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    chinese: 98,
-    math: 60,
-    english: 70,
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    chinese: 98,
-    math: 66,
-    english: 89,
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    chinese: 98,
-    math: 90,
-    english: 70,
-  },
-  {
-    key: '4',
-    name: 'Jim Red',
-    chinese: 88,
-    math: 99,
-    english: 89,
-  },
-];
+import React, { useEffect, useState } from "react";
+import { Table, Button } from "antd";
+import { ContactsOutlined, EditOutlined,DeleteOutlined } from "@ant-design/icons";
+import ContactModal from "./CreateContactModal";
+import CreateContactModal from "./CreateContactModal";
+import { getContactList, getContactTypes } from "./Action";
+import UpdateContactModal from "./UpdateContactdetails";
+
 const onChange = (pagination, filters, sorter, extra) => {
-  console.log('params', pagination, filters, sorter, extra);
+  console.log("params", pagination, filters, sorter, extra);
 };
-const App = () =>
-<div>
-  <div  style={{color : '#2064d8' , marginRight: '85%', fontWeight : '500', fontSize: '135%', marginTop: '25px auto'}}><ContactsOutlined /> Contact</div>
-  <div><hr></hr>
-  {/* <Button type='primary' style={{maxWidth: '150px', marginLeft: '80%'}}>Add Contact</Button> */}
-  <>
-  <CreateContactModal />
-  </>
-  <div> 
-  <Table columns={columns} dataSource={data} onChange={onChange} /> 
-  </div>
-  </div>
-  </div>;
-export default App;
+const Contact = () => {
+  const [contact, setContact] = useState([]);
+  const [contactType, setcontactType] = useState([]);
+
+  const fetchContact = async () => {
+    try {
+      const res = await getContactList();
+      const contact = res.data;
+      setContact(contact);
+    } catch (error) {
+      console.error("Error fetching tax treatment data:", error);
+    }
+  };
+
+  const fetchContactType = async () => {
+    try {
+      const res = await getContactTypes();
+      const contactType = res.data;
+      setcontactType(contactType);
+    } catch (error) {
+      console.error("Error fetching tax treatment data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContact();
+    fetchContactType();
+  }, []);
+
+  const columns = [
+    {
+      title: "Contact Name",
+      dataIndex: "firstName",
+      sorter: true,
+      // render: (contact) => `${contact.firstName} ${contact.lastName}`,
+      width: "20%",
+    },
+    {
+      title: "Contact Type",
+      dataIndex: "contactType",
+      sorter: {
+        compare: (a, b) => a.contactType - b.contactType,
+        multiple: 3,
+      },
+      render: (value) => {
+        const type = contactType.find((type) => type.value === value);
+        return type ? type.label : "Unknown";
+      },
+    },
+
+    {
+      title: "Email",
+      dataIndex: "email",
+      sorter: {
+        compare: (a, b) => a.math - b.math,
+        multiple: 2,
+      },
+    },
+    {
+      title: "Status",
+      dataIndex: "isActive",
+      sorter: {
+        compare: (a, b) => a.english - b.english,
+        multiple: 1,
+      },
+      render: (isActive) => <span>{isActive ? "Active" : "Inactive"}</span>,
+    },
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "x",
+      render: () => (
+        <div
+          className="row "
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: "10px",
+          }}
+        >
+          <UpdateContactModal/>
+          {/* {/* <Button className="col-md-3" htmlType="submit">
+          <EditOutlined />
+          </Button> */}
+            
+          <Button className="col-md-3" htmlType="submit">
+          <DeleteOutlined />
+          </Button> 
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <div
+        style={{
+          color: "#2064d8",
+          marginRight: "85%",
+          fontWeight: "500",
+          fontSize: "135%",
+          marginTop: "25px auto",
+        }}
+      >
+        <ContactsOutlined /> Contact
+      </div>
+      <div>
+        <hr></hr>
+        <>
+          <CreateContactModal />
+        </>
+        <div>
+          <Table columns={columns} dataSource={contact} onChange={onChange} />
+        </div>
+      </div>
+    </div>
+  );
+};
+export default Contact;
