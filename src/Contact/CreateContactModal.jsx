@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Checkbox, Form, Input, Radio, Select, Modal } from "antd";
+import { Button, Checkbox, Form, Input, Radio, Select, Modal, } from "antd";
 import {
   getActiveCurrencyConversion,
   getContactTypes,
@@ -9,9 +9,9 @@ import {
   getTaxTreatment,
   save,
 } from "./Action";
+import { toast } from "react-toastify";
 
 const CreateContactModal = () => {
-  const [componentDisabled, setComponentDisabled] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [form] = Form.useForm();
@@ -20,7 +20,6 @@ const CreateContactModal = () => {
   const [statelist, setstatelist] = useState([]);
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
-  const [isAddressSame, setIsAddressSame] = useState(false);
 
   const preprocessFormValues = (values) => {
     const processValue = (value) => {
@@ -41,19 +40,20 @@ const CreateContactModal = () => {
   };
 
   const onFinish = async (values) => {
-    // Process values to replace nulls with empty strings
     const processedValues = preprocessFormValues(values);
 
-    console.log("Processed Form values:", processedValues); // Debugging line
+    console.log("Processed Form values:", processedValues); 
 
+    
     try {
-      // Simulate a save function
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await save(processedValues);
       message.success("Save successful");
     } catch (err) {
       message.error(err?.obj ? "Save failed." : "Something went wrong");
     }
-  };
+  }
+
+
   const showLoading = () => {
     setOpen(true);
     setLoading(true);
@@ -133,7 +133,19 @@ const CreateContactModal = () => {
       </Button>
       <Modal
         title={<p>Add Contact</p>}
-        footer={<></>}
+        footer={[
+          <Button key="cancel" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={() => {form.submit(); setOpen(false);}} // Trigger form submission
+          >
+            Add Contact
+          </Button>,
+        ]}
         loading={loading}
         width={1200}
         open={open}
@@ -540,12 +552,12 @@ const CreateContactModal = () => {
                   gap: "10px",
                 }}
               >
-                <Button className="col-md-2" type="primary" htmlType="submit" >
+                {/* <Button className="col-md-2" type="primary" htmlType="submit" >
                   Create
                 </Button>
                 <Button className="col-md-2" type="primary" onClick={() => setOpen(false)}>
                   Cancel
-                </Button>
+                </Button> */}
               </div>
             </div>
             <hr />

@@ -49,7 +49,7 @@ const UpdateContactModal = () => {
 
     try {
       // Simulate a save function
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await save(processedValues);
       message.success("Save successful");
     } catch (err) {
       message.error(err?.obj ? "Save failed." : "Something went wrong");
