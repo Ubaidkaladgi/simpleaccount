@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button , message} from "antd";
+import { Table, Button , message, Popconfirm  } from "antd";
 import { ContactsOutlined, EditOutlined,DeleteOutlined } from "@ant-design/icons";
 import ContactModal from "./CreateContactModal";
 import CreateContactModal from "./CreateContactModal";
@@ -85,6 +85,14 @@ const Contact = () => {
     fetchContactType();
   }, []);
 
+  
+  const confirm = (contactId) => {
+    deleteContact(contactId);
+  };
+  const cancel = (e) => {
+    console.log(e);
+  };
+
   const columns = [
     {
       title: "Contact Name",
@@ -137,16 +145,23 @@ const Contact = () => {
           }}
         >
           
-           <UpdateContactModal/>
-          <Button
-            className="col-md-3"
-            htmlType="submit"
-            onClick={() => {deleteContact(contact.contactId);
-              openMessage();
-            }}
+           
+          <Popconfirm
+            title="Are you sure to delete this contact?"
+            onConfirm={() => confirm(contact.contactId)}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+            
           >
-            <DeleteOutlined />
-          </Button>
+            <Button
+            className="col-md-3"
+              htmlType="button"
+            >
+              <DeleteOutlined />
+            </Button>
+          </Popconfirm>
+          <UpdateContactModal contact={contact} /> {/* Pass contact to modal */}
         </div>
       ),
     },
@@ -170,7 +185,7 @@ const Contact = () => {
         <>
           <CreateContactModal />
         </>
-        <div>
+        <div style={{marginRight: '2%'}}>
           <Table columns={columns} dataSource={contact} onChange={onChange} />
         </div>
       </div>
