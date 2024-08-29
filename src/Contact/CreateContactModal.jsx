@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Checkbox, Form, Input, Radio, Select, Modal, } from "antd";
+import { Button, Checkbox, Form, Input, Radio, Select, Modal, message } from "antd";
 import {
   getActiveCurrencyConversion,
   getContactTypes,
@@ -9,7 +9,6 @@ import {
   getTaxTreatment,
   save,
 } from "./Action";
-import { toast } from "react-toastify";
 
 const CreateContactModal = () => {
   const [open, setOpen] = React.useState(false);
@@ -20,6 +19,8 @@ const CreateContactModal = () => {
   const [statelist, setstatelist] = useState([]);
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+  const key = 'updatable';
 
   const preprocessFormValues = (values) => {
     const processValue = (value) => {
@@ -48,6 +49,7 @@ const CreateContactModal = () => {
     try {
       await save(processedValues);
       message.success("Save successful");
+      setOpen(false);
     } catch (err) {
       message.error(err?.obj ? "Save failed." : "Something went wrong");
     }
@@ -61,6 +63,23 @@ const CreateContactModal = () => {
       setLoading(false);
     }, 1000);
   };
+
+  const openMessage = () => {
+    messageApi.open({
+      key,
+      type: 'loading',
+      content: 'Loading...',
+    });
+    setTimeout(() => {
+      messageApi.open({
+        key,
+        type: 'success',
+        content: 'Loaded!',
+        duration: 2,
+      });
+    }, 1000);
+  };
+  
 
   const fetchTaxTreatment = async () => {
     try {
@@ -81,6 +100,7 @@ const CreateContactModal = () => {
       console.error("Error fetching tax treatment data:", error);
     }
   };
+
   const fetchContactType = async () => {
     try {
       const res = await getContactTypes();
@@ -90,6 +110,7 @@ const CreateContactModal = () => {
       console.error("Error fetching tax treatment data:", error);
     }
   };
+  
 
   const fetchStatelist = async (countryCode) => {
     try {
@@ -116,13 +137,16 @@ const CreateContactModal = () => {
     fetchCurrency();
     fetchContactType();
     fetchTaxTreatment();
+    openMessage();
   }, []);
 
   return (
     <>
       <Button
         type="primary"
-        onClick={showLoading}
+        onClick={() => {showLoading();
+          form.resetFields();
+        }}
         style={{
           maxWidth: "150px",
           marginLeft: "80%",
@@ -134,14 +158,19 @@ const CreateContactModal = () => {
       <Modal
         title={<p>Add Contact</p>}
         footer={[
-          <Button key="cancel" onClick={() => setOpen(false)}>
+          <Button key="cancel" onClick={() => {
+            form.resetFields();
+            setOpen(false);
+            }}>
             Cancel
           </Button>,
           <Button
             key="submit"
             type="primary"
             loading={loading}
-            onClick={() => {form.submit(); setOpen(false);}} // Trigger form submission
+            onClick={() => {form.submit();
+              openMessage();
+            }}
           >
             Add Contact
           </Button>,
@@ -149,7 +178,9 @@ const CreateContactModal = () => {
         loading={loading}
         width={1200}
         open={open}
-        onCancel={() => setOpen(false)}
+        onCancel={() => {setOpen(false);
+          form.resetFields();
+        }}
         bodyStyle={{ padding: "20px", maxHeight: "70vh", overflowY: "auto" }}
       >
         <>
@@ -166,7 +197,7 @@ const CreateContactModal = () => {
             <div className="row">
               <div className="col-md-3">
                 <Form.Item label="Status">
-                  <Radio.Group defaultValue="apple">
+                  <Radio.Group>
                     <Radio value="apple"> Active </Radio>
                     <Radio value="pear"> InActive </Radio>
                   </Radio.Group>

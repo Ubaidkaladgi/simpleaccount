@@ -113,3 +113,51 @@ export const getState = (countryCode) => {
             })
     )
 };
+
+export const getContactCouunt = (contactId) => {
+    let data = {
+        method: 'GET',
+        url: `/rest/contact/getInvoicesCountForContact/?contactId=${contactId}`,
+    };
+    return (
+        authApi(data)
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                throw err;
+            })
+    )
+};
+
+export const getdeleteContact = (contactId) => {
+    let data = {
+        method: 'DELETE',
+        url: `/rest/contact/delete?id=${contactId}`,
+    };
+    return (
+        authApi(data)
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                throw err;
+            })
+    )
+};
+
+export const getUpdateContact = (contactId) => {
+    let data = {
+        method: 'GET',
+        url: `/rest/contact/getContactById?contactId=${contactId}`,
+    };
+    return (
+        authApi(data)
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                throw err;
+            })
+    )
+};

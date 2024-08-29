@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from "antd";
+import { Table, Button , message} from "antd";
 import { ContactsOutlined, EditOutlined,DeleteOutlined } from "@ant-design/icons";
 import ContactModal from "./CreateContactModal";
 import CreateContactModal from "./CreateContactModal";
-import { getContactList, getContactTypes } from "./Action";
+import { getdeleteContact, getContactCouunt, getContactList, getContactTypes } from "./Action";
 import UpdateContactModal from "./UpdateContactdetails";
 
 const onChange = (pagination, filters, sorter, extra) => {
@@ -12,6 +12,11 @@ const onChange = (pagination, filters, sorter, extra) => {
 const Contact = () => {
   const [contact, setContact] = useState([]);
   const [contactType, setcontactType] = useState([]);
+  const [contactCount, setContactCount] = useState([]);
+  const [deleteConatct,setDeleteContact] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+  const key = 'updatable';
+
 
   const fetchContact = async () => {
     try {
@@ -31,6 +36,48 @@ const Contact = () => {
     } catch (error) {
       console.error("Error fetching tax treatment data:", error);
     }
+  };
+
+  
+  const deleteContact = async (contactId) => {
+    try {
+      const res = await getdeleteContact(contactId).then(()=>{
+        fetchContact();
+      }).catch((err)=>{
+        console.log("error");
+      })
+     message.success('Contact deleted successfully');
+    } catch (error) {
+      console.error("Error fetching tax treatment data:", error);
+      message.error('Error deleting contact');
+
+    }
+  };
+
+  const fetchContactCount = async (contactId) => {
+    try {
+      const res = await getContactCouunt(contactId);
+      const ContactCount = res.data;
+      setContactCount(ContactCount);
+    } catch (error) {
+      console.error("Error fetching tax treatment data:", error);
+    }
+  };
+
+  const openMessage = () => {
+    messageApi.open({
+      key,
+      type: 'loading',
+      content: 'Loading...',
+    });
+    setTimeout(() => {
+      messageApi.open({
+        key,
+        type: 'success',
+        content: 'Loaded!',
+        duration: 2,
+      });
+    }, 1000);
   };
 
   useEffect(() => {
@@ -80,23 +127,26 @@ const Contact = () => {
       title: "Action",
       dataIndex: "",
       key: "x",
-      render: () => (
+      render: (text, contact) => (
         <div
-          className="row "
+          className="row"
           style={{
             display: "flex",
             justifyContent: "flex-end",
             gap: "10px",
           }}
         >
-          <UpdateContactModal/>
-          {/* {/* <Button className="col-md-3" htmlType="submit">
-          <EditOutlined />
-          </Button> */}
-            
-          <Button className="col-md-3" htmlType="submit">
-          <DeleteOutlined />
-          </Button> 
+          
+           <UpdateContactModal/>
+          <Button
+            className="col-md-3"
+            htmlType="submit"
+            onClick={() => {deleteContact(contact.contactId);
+              openMessage();
+            }}
+          >
+            <DeleteOutlined />
+          </Button>
         </div>
       ),
     },
