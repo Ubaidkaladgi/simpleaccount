@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Checkbox, Form, Input, Radio, Select, Modal, message } from "antd";
+import { Button, Checkbox, Form, Input, Radio, Select, Modal, message, Popover } from "antd";
 import {
   getActiveCurrencyConversion,
   getContactTypes,
@@ -355,7 +355,11 @@ const CreateContactModal = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter Taxtreatment Number",
+                      message: "Please enter Tax Treatment Number",
+                    },
+                    {
+                      pattern: /^[0-9]{1,15}$/,
+                      message: "Tax Treatment Number must be up to 15 digits long and contain only numbers",
                     },
                   ]}
                 >
