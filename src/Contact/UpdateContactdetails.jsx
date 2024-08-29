@@ -122,7 +122,6 @@ const UpdateContactModal = () => {
   return (
     <>
       <Button
-        type="primary"
         onClick={showLoading}
          className="col-md-2"
       >
