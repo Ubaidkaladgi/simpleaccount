@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button , message, Popconfirm  } from "antd";
-import { ContactsOutlined, EditOutlined,DeleteOutlined } from "@ant-design/icons";
+import { Table, Button, message, Popconfirm } from "antd";
+import {
+  ContactsOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import ContactModal from "./CreateContactModal";
 import CreateContactModal from "./CreateContactModal";
 import { getdeleteContact, getContactCouunt, getContactList, getContactTypes } from "./Action";
@@ -9,11 +13,12 @@ import UpdateContactModal from "./UpdateContactdetails";
 const onChange = (pagination, filters, sorter, extra) => {
   console.log("params", pagination, filters, sorter, extra);
 };
+
 const contact = () => {
   const [contactList, setContact] = useState([]);
   const [contactType, setcontactType] = useState([]);
   const [contactCount, setContactCount] = useState([]);
-  const [deleteConatct,setDeleteContact] = useState([]);
+  const [deleteConatct, setDeleteContact] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const key = 'updatable';
 
@@ -25,7 +30,7 @@ const contact = () => {
       setContact(contactList);
       console.log(contactList[0]);
     } catch (error) {
-      console.error("Error fetching tax treatment data:", error);
+      console.error("Error fetching contact data:", error);
     }
   };
 
@@ -35,7 +40,7 @@ const contact = () => {
       const contactType = res.data;
       setcontactType(contactType);
     } catch (error) {
-      console.error("Error fetching tax treatment data:", error);
+      console.error("Error fetching contact type data:", error);
     }
   };
 
@@ -50,8 +55,7 @@ const contact = () => {
      message.success('Contact deleted successfully');
     } catch (error) {
       console.error("Error fetching tax treatment data:", error);
-      message.error('Error deleting Contact');
-
+      message.error("Error deleting Contact");
     }
   };
 
@@ -61,7 +65,7 @@ const contact = () => {
       const ContactCount = res.data;
       setContactCount(ContactCount);
     } catch (error) {
-      console.error("Error fetching tax treatment data:", error);
+      console.error("Error fetching contact count:", error);
     }
   };
 
@@ -98,9 +102,13 @@ const contact = () => {
     {
       title: "Contact Name",
       dataIndex: "firstName",
-      sorter: true,
-      // render: (contactList) => `${contactList.firstName} ${contactList.lastName}`,
+      // sorter: true,
       width: "20%",
+      filters: Array.from(
+        new Set(contactList.map((contact) => contact.firstName))
+      ).map((name) => ({ text: name, value: name })),
+      onFilter: (value, record) => record.firstName.startsWith(value),
+      filterSearch: true,
     },
     {
       title: "Contact Type",
