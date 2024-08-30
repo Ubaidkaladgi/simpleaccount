@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Checkbox, Form, Input, Radio, Select, Modal, message, Popover } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Radio,
+  Select,
+  Modal,
+  message,
+  Popover,
+} from "antd";
 import {
   getActiveCurrencyConversion,
   getContactTypes,
@@ -20,14 +30,13 @@ const CreateContactModal = () => {
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const key = 'updatable';
+  const key = "updatable";
 
   const preprocessFormValues = (values) => {
     const processValue = (value) => {
       if (value === null || value === undefined) {
-        return '';
-      } else if (typeof value === 'object' && !Array.isArray(value)) {
-        // Handle nested objects
+        return "";
+      } else if (typeof value === "object" && !Array.isArray(value)) {
         return Object.keys(value).reduce((acc, key) => {
           acc[key] = processValue(value[key]);
           return acc;
@@ -36,16 +45,15 @@ const CreateContactModal = () => {
         return value;
       }
     };
-    
+
     return processValue(values);
   };
 
   const onFinish = async (values) => {
     const processedValues = preprocessFormValues(values);
 
-    console.log("Processed Form values:", processedValues); 
+    console.log("Processed Form values:", processedValues);
 
-    
     try {
       await save(processedValues);
       message.success("Save successful");
@@ -53,8 +61,7 @@ const CreateContactModal = () => {
     } catch (err) {
       message.error(err?.obj ? "Save failed." : "Something went wrong");
     }
-  }
-
+  };
 
   const showLoading = () => {
     setOpen(true);
@@ -67,19 +74,18 @@ const CreateContactModal = () => {
   const openMessage = () => {
     messageApi.open({
       key,
-      type: 'loading',
-      content: 'Loading...',
+      type: "loading",
+      content: "Loading...",
     });
     setTimeout(() => {
       messageApi.open({
         key,
-        type: 'success',
-        content: 'Loaded!',
+        type: "success",
+        content: "Loaded!",
         duration: 2,
       });
     }, 1000);
   };
-  
 
   const fetchTaxTreatment = async () => {
     try {
@@ -110,7 +116,6 @@ const CreateContactModal = () => {
       console.error("Error fetching tax treatment data:", error);
     }
   };
-  
 
   const fetchStatelist = async (countryCode) => {
     try {
@@ -132,19 +137,34 @@ const CreateContactModal = () => {
     }
   };
 
+  const fetchAllData = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        fetchCountry(),
+        fetchCurrency(),
+        fetchContactType(),
+        fetchTaxTreatment(),
+      ]);
+    } catch (error) {
+      message.error("Failed to fetch data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetchCountry();
-    fetchCurrency();
-    fetchContactType();
-    fetchTaxTreatment();
-    openMessage();
-  }, []);
+    if (open) {
+      fetchAllData();
+    }
+  }, [open]);
 
   return (
     <>
       <Button
         type="primary"
-        onClick={() => {showLoading();
+        onClick={() => {
+          showLoading();
           form.resetFields();
         }}
         style={{
@@ -158,17 +178,21 @@ const CreateContactModal = () => {
       <Modal
         title={<p>Add Contact</p>}
         footer={[
-          <Button key="cancel" onClick={() => {
-            form.resetFields();
-            setOpen(false);
-            }}>
+          <Button
+            key="cancel"
+            onClick={() => {
+              form.resetFields();
+              setOpen(false);
+            }}
+          >
             Cancel
           </Button>,
           <Button
             key="submit"
             type="primary"
             loading={loading}
-            onClick={() => {form.submit();
+            onClick={() => {
+              form.submit();
               openMessage();
             }}
           >
@@ -178,7 +202,8 @@ const CreateContactModal = () => {
         loading={loading}
         width={1200}
         open={open}
-        onCancel={() => {setOpen(false);
+        onCancel={() => {
+          setOpen(false);
           form.resetFields();
         }}
         bodyStyle={{ padding: "20px", maxHeight: "70vh", overflowY: "auto" }}
@@ -359,7 +384,8 @@ const CreateContactModal = () => {
                     },
                     {
                       pattern: /^[0-9]{1,15}$/,
-                      message: "Tax Treatment Number must be up to 15 digits long and contain only numbers",
+                      message:
+                        "Tax Treatment Number must be up to 15 digits long and contain only numbers",
                     },
                   ]}
                 >
@@ -393,7 +419,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="billingcountryId"
+                  name="countryId"
                   label={
                     <span>
                       Country <span style={{ color: "red" }}>*</span>
@@ -418,7 +444,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="billingStateProvince"
+                  name="stateId"
                   label={
                     <span>
                       Emirate <span style={{ color: "red" }}>*</span>
@@ -586,14 +612,7 @@ const CreateContactModal = () => {
                   justifyContent: "flex-end",
                   gap: "10px",
                 }}
-              >
-                {/* <Button className="col-md-2" type="primary" htmlType="submit" >
-                  Create
-                </Button>
-                <Button className="col-md-2" type="primary" onClick={() => setOpen(false)}>
-                  Cancel
-                </Button> */}
-              </div>
+              ></div>
             </div>
             <hr />
           </Form>

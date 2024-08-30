@@ -7,11 +7,12 @@ import {
   getcountry,
   getState,
   getTaxTreatment,
+  getUpdateContact,
   save,
 } from "./Action";
 import { EditOutlined } from "@ant-design/icons";
 
-const UpdateContactModal = () => {
+const UpdateContactModal = (contactId) => {
   const [componentDisabled, setComponentDisabled] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
@@ -19,6 +20,7 @@ const UpdateContactModal = () => {
   const [taxTreatmentOptions, setTaxTreatmentOptions] = useState([]);
   const [country, setcountry] = useState([]);
   const [statelist, setstatelist] = useState([]);
+  const [updateContact, setupdatecontact] = useState([]);
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
   const [isAddressSame, setIsAddressSame] = useState(false);
@@ -26,9 +28,8 @@ const UpdateContactModal = () => {
   const preprocessFormValues = (values) => {
     const processValue = (value) => {
       if (value === null || value === undefined) {
-        return '';
-      } else if (typeof value === 'object' && !Array.isArray(value)) {
-        // Handle nested objects
+        return "";
+      } else if (typeof value === "object" && !Array.isArray(value)) {
         return Object.keys(value).reduce((acc, key) => {
           acc[key] = processValue(value[key]);
           return acc;
@@ -37,23 +38,21 @@ const UpdateContactModal = () => {
         return value;
       }
     };
-    
+
     return processValue(values);
   };
 
   const onFinish = async (values) => {
-    // Process values to replace nulls with empty strings
     const processedValues = preprocessFormValues(values);
 
-    console.log("Processed Form values:", processedValues); // Debugging line
+    console.log("Processed Form values:", processedValues);
 
-    try {
-      // Simulate a save function
-      await save(processedValues);
-      message.success("Save successful");
-    } catch (err) {
-      message.error(err?.obj ? "Save failed." : "Something went wrong");
-    }
+    // try {
+    //   await save(processedValues);
+    //   message.success("Save successful");
+    // } catch (err) {
+    //   message.error(err?.obj ? "Save failed." : "Something went wrong");
+    // }
   };
   const showLoading = () => {
     setOpen(true);
@@ -112,20 +111,51 @@ const UpdateContactModal = () => {
     }
   };
 
+  const fetchContact = async () => {
+    try {
+      // console.log("Contact",contact);
+      // console.log(contact.firstName);
+      const res = await getUpdateContact(contactId.contactId);
+      const contactData = res.data;
+      setupdatecontact(contactData);
+      form.setFieldsValue(contactData);
+      form.setFieldValue("billingCountryId", contactData.countryId);
+      await fetchStatelist(contactData.countryId);
+      form.setFieldValue("billingStateProvince", contactData.stateId);
+      form.setFieldValue("billingPoBoxNumber", contactData.poBoxNumber);
+      form.setFieldValue("shippingPoBoxNumber", contactData.postZipCode);
+    } catch (error) {
+      console.error("Error fetching tax treatment data:", error);
+    }
+  };
+
+  const fetchAllData = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        fetchCountry(),
+        fetchCurrency(),
+        fetchContactType(),
+        fetchTaxTreatment(),
+        fetchContact(),
+      ]);
+    } catch (error) {
+      message.error("Failed to fetch data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetchCountry();
-    fetchCurrency();
-    fetchContactType();
-    fetchTaxTreatment();
-  }, []);
+    if (open) {
+      fetchAllData();
+    }
+  }, [open]);
 
   return (
     <>
-      <Button
-        onClick={showLoading}
-         className="col-md-2"
-      >
-       <EditOutlined />
+      <Button onClick={showLoading} className="col-md-2">
+        <EditOutlined />
       </Button>
       <Modal
         title={<p>Update Contact</p>}
@@ -342,7 +372,7 @@ const UpdateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="billingcountryId"
+                  name="billingCountryId"
                   label={
                     <span>
                       Country <span style={{ color: "red" }}>*</span>
@@ -536,10 +566,14 @@ const UpdateContactModal = () => {
                   gap: "10px",
                 }}
               >
-                <Button className="col-md-2" type="primary" htmlType="submit" >
+                <Button className="col-md-2" type="primary" htmlType="submit">
                   Create
                 </Button>
-                <Button className="col-md-2" type="primary" onClick={() => setOpen(false)}>
+                <Button
+                  className="col-md-2"
+                  type="primary"
+                  onClick={() => setOpen(false)}
+                >
                   Cancel
                 </Button>
               </div>
