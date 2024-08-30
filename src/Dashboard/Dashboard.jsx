@@ -48,41 +48,41 @@ const items2 = [
     ],
    },
  
-  {
-    key: "sub2",
-    icon: <ContainerOutlined />,
-    label: "Income",
-    children: [
-      { key: "1", label: " Customer Invoice" },
-      { key: "2", label: "Credit Note" },
-    ],
-  },
+  // {
+  //   key: "sub2",
+  //   icon: <ContainerOutlined />,
+  //   label: "Income",
+  //   children: [
+  //     { key: "1", label: " Customer Invoice" },
+  //     { key: "2", label: "Credit Note" },
+  //   ],
+  // },
  
-  {
-    key: "sub3",
-    icon: <ContainerOutlined />,
-    label: "Expense",
-    children: [
-      { key: "3", label: "Supplier Invoice" },
-      { key: "4", label: "Debit Note" },
-    ],
-  },
+  // {
+  //   key: "sub3",
+  //   icon: <ContainerOutlined />,
+  //   label: "Expense",
+  //   children: [
+  //     { key: "3", label: "Supplier Invoice" },
+  //     { key: "4", label: "Debit Note" },
+  //   ],
+  // },
  
-  {
-    key: "sub4",
-    icon: <BankOutlined />,
-    label: "Banking",
-    children: [{ key: "5", label: "Bank Account" }],
-  },
-  {
-    key: "sub5",
-    icon: <ContainerOutlined />,
-    label: "Tables",
-    children: [{ key: "6", label: " Currency" },
-      { key: "8", label: "Country" },
+  // {
+  //   key: "sub4",
+  //   icon: <BankOutlined />,
+  //   label: "Banking",
+  //   children: [{ key: "5", label: "Bank Account" }],
+  // },
+  // {
+  //   key: "sub5",
+  //   icon: <ContainerOutlined />,
+  //   label: "Tables",
+  //   children: [{ key: "6", label: " Currency" },
+  //     { key: "8", label: "Country" },
       
-    ],
-  },
+  //   ],
+  // },
   {
     key: "sub6",
     icon: <ContainerOutlined />,

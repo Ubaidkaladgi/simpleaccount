@@ -19,7 +19,8 @@ const UpdateContactModal = (contactId) => {
   const [form] = Form.useForm();
   const [taxTreatmentOptions, setTaxTreatmentOptions] = useState([]);
   const [country, setcountry] = useState([]);
-  const [statelist, setstatelist] = useState([]);
+  const [billingStateList, setBillingStateList] = useState([]);
+  const [shippingStateList, setShippingStateList] = useState([]);
   const [updateContact, setupdatecontact] = useState([]);
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
@@ -91,11 +92,21 @@ const UpdateContactModal = (contactId) => {
     }
   };
 
-  const fetchStatelist = async (countryCode) => {
+  const fetchBillingStatelist = async (countryCode) => {
     try {
       const res = await getState(countryCode);
-      const statelist = res.data;
-      setstatelist(statelist);
+      const billingStateList = res.data;
+      setBillingStateList(billingStateList);
+    } catch (error) {
+      console.error("Error fetching tax treatment data:", error);
+    }
+  };
+
+  const fetchShippingStatelist = async (countryCode) => {
+    try {
+      const res = await getState(countryCode);
+      const shippingStateList = res.data;
+      setShippingStateList(shippingStateList);
     } catch (error) {
       console.error("Error fetching tax treatment data:", error);
     }
@@ -120,10 +131,12 @@ const UpdateContactModal = (contactId) => {
       setupdatecontact(contactData);
       form.setFieldsValue(contactData);
       form.setFieldValue("billingCountryId", contactData.countryId);
-      await fetchStatelist(contactData.countryId);
+      await fetchBillingStatelist(contactData.countryId);
       form.setFieldValue("billingStateProvince", contactData.stateId);
       form.setFieldValue("billingPoBoxNumber", contactData.poBoxNumber);
       form.setFieldValue("shippingPoBoxNumber", contactData.postZipCode);
+      await fetchShippingStatelist(contactData.shippingCountryId);
+
     } catch (error) {
       console.error("Error fetching tax treatment data:", error);
     }
@@ -158,7 +171,7 @@ const UpdateContactModal = (contactId) => {
         <EditOutlined />
       </Button>
       <Modal
-        title={<p>Update Contact</p>}
+        title={<><p style={{fontSize: "28px" , color:"#2064d8"}}>Update Contact</p> <hr></hr></>}
         footer={<></>}
         loading={loading}
         width={1200}
@@ -176,7 +189,6 @@ const UpdateContactModal = (contactId) => {
             onFinish={onFinish}
             initialValues={{ isBillingAndShippingAddressSame: false }}
           >
-            <hr />
             <div className="row">
               <div className="col-md-3">
                 <Form.Item label="Status">
@@ -382,7 +394,7 @@ const UpdateContactModal = (contactId) => {
                 >
                   <Select
                     placeholder="Select Country"
-                    onChange={(value) => fetchStatelist(value)}
+                    onChange={(value) => fetchBillingStatelist(value)}
                   >
                     {country.map((option) => (
                       <Select.Option
@@ -406,7 +418,7 @@ const UpdateContactModal = (contactId) => {
                   rules={[{ required: true, message: "Please Enter Emirate" }]}
                 >
                   <Select placeholder="Select State">
-                    {statelist.map((option) => (
+                    {billingStateList.map((option) => (
                       <Select.Option key={option.value} value={option.value}>
                         {option.label}
                       </Select.Option>
@@ -496,7 +508,7 @@ const UpdateContactModal = (contactId) => {
                 >
                   <Select
                     placeholder="Select Country"
-                    onChange={(value) => fetchStatelist(value)}
+                    onChange={(value) => fetchShippingStatelist(value)}
                   >
                     {country.map((option) => (
                       <Select.Option
@@ -520,7 +532,7 @@ const UpdateContactModal = (contactId) => {
                   rules={[{ required: true, message: "Please Enter Emirate" }]}
                 >
                   <Select placeholder="Select State">
-                    {statelist.map((option) => (
+                    {shippingStateList.map((option) => (
                       <Select.Option key={option.value} value={option.value}>
                         {option.label}
                       </Select.Option>
@@ -566,12 +578,13 @@ const UpdateContactModal = (contactId) => {
                   gap: "10px",
                 }}
               >
-                <Button className="col-md-2" type="primary" htmlType="submit">
+                <Button className="col-md-2" shape="round" type="primary" htmlType="submit">
                   Create
                 </Button>
                 <Button
                   className="col-md-2"
-                  type="primary"
+                  // type="primary"
+                  shape="round"
                   onClick={() => setOpen(false)}
                 >
                   Cancel

@@ -163,6 +163,7 @@ const CreateContactModal = () => {
     <>
       <Button
         type="primary"
+        shape="round"
         onClick={() => {
           showLoading();
           form.resetFields();
@@ -176,31 +177,10 @@ const CreateContactModal = () => {
         Add Contact
       </Button>
       <Modal
-        title={<p>Add Contact</p>}
-        footer={[
-          <Button
-            key="cancel"
-            onClick={() => {
-              form.resetFields();
-              setOpen(false);
-            }}
-          >
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={() => {
-              form.submit();
-              openMessage();
-            }}
-          >
-            Add Contact
-          </Button>,
-        ]}
+        title={<><p style={{fontSize: "28px" , color:"#2064d8"}}>Add Contact</p> <hr></hr></>}
+        footer={<></>}
         loading={loading}
-        width={1200}
+        width={1500}
         open={open}
         onCancel={() => {
           setOpen(false);
@@ -218,7 +198,7 @@ const CreateContactModal = () => {
             onFinish={onFinish}
             initialValues={{ isBillingAndShippingAddressSame: false }}
           >
-            <hr />
+            
             <div className="row">
               <div className="col-md-3">
                 <Form.Item label="Status">
@@ -582,7 +562,7 @@ const CreateContactModal = () => {
               </div>
               <div className="col-md-4">
                 <Form.Item
-                  name="shippingPoBoxNumber"
+                  name="shippingPostZipCode"
                   label={
                     <span>
                       PO Box Number <span style={{ color: "red" }}>*</span>
@@ -612,7 +592,32 @@ const CreateContactModal = () => {
                   justifyContent: "flex-end",
                   gap: "10px",
                 }}
-              ></div>
+              >
+                 <Button
+             className="col-md-2"
+              key="submit"
+              type="primary"
+              shape="round"
+              loading={loading}
+              onClick={() => {
+                form.submit();
+                openMessage();
+              }}
+            >
+              Add Contact
+            </Button>
+                <Button
+                 className="col-md-2"
+                 shape="round"
+                key="cancel"
+              onClick={() => {
+                form.resetFields();
+                setOpen(false);
+              }}
+            >
+              Cancel
+            </Button>,
+           </div>
             </div>
             <hr />
           </Form>

@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, message, Popconfirm } from "antd";
-import {
-  ContactsOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { Table, Button , message, Popconfirm  } from "antd";
+import { ContactsOutlined, EditOutlined,DeleteOutlined } from "@ant-design/icons";
 import ContactModal from "./CreateContactModal";
 import CreateContactModal from "./CreateContactModal";
-import {
-  getdeleteContact,
-  getContactCouunt,
-  getContactList,
-  getContactTypes,
-} from "./Action";
+import { getdeleteContact, getContactCouunt, getContactList, getContactTypes } from "./Action";
 import UpdateContactModal from "./UpdateContactdetails";
 
 const onChange = (pagination, filters, sorter, extra) => {
@@ -22,9 +13,10 @@ const contact = () => {
   const [contactList, setContact] = useState([]);
   const [contactType, setcontactType] = useState([]);
   const [contactCount, setContactCount] = useState([]);
-  const [deleteConatct, setDeleteContact] = useState([]);
+  const [deleteConatct,setDeleteContact] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const key = "updatable";
+  const key = 'updatable';
+
 
   const fetchContact = async () => {
     try {
@@ -47,19 +39,19 @@ const contact = () => {
     }
   };
 
+  
   const deleteContact = async (contactId) => {
     try {
-      const res = await getdeleteContact(contactId)
-        .then(() => {
-          fetchContact();
-        })
-        .catch((err) => {
-          console.log("error");
-        });
-      message.success("Contact deleted successfully");
+      const res = await getdeleteContact(contactId).then(()=>{
+        fetchContact();
+      }).catch((err)=>{
+        console.log("error");
+      })
+     message.success('Contact deleted successfully');
     } catch (error) {
       console.error("Error fetching tax treatment data:", error);
-      message.error("Error deleting Contact");
+      message.error('Error deleting Contact');
+
     }
   };
 
@@ -76,14 +68,14 @@ const contact = () => {
   const openMessage = () => {
     messageApi.open({
       key,
-      type: "loading",
-      content: "Loading...",
+      type: 'loading',
+      content: 'Loading...',
     });
     setTimeout(() => {
       messageApi.open({
         key,
-        type: "success",
-        content: "Loaded!",
+        type: 'success',
+        content: 'Loaded!',
         duration: 2,
       });
     }, 1000);
@@ -94,6 +86,7 @@ const contact = () => {
     fetchContactType();
   }, []);
 
+  
   const confirm = (contactId) => {
     deleteContact(contactId);
   };
@@ -151,19 +144,22 @@ const contact = () => {
             gap: "10px",
           }}
         >
-          <UpdateContactModal contactId={record.contactId} />
-
+           <UpdateContactModal contactId={record.contactId} />
+           
           <Popconfirm
             title="Are you sure to delete this contact?"
             onConfirm={() => confirm(record.contactId)}
-            onCancel={() => {
-              cancel;
-              console.log(record);
+            onCancel={()=>{cancel
+              console.log(record)
             }}
             okText="Yes"
             cancelText="No"
+            
           >
-            <Button className="col-md-3" htmlType="button">
+            <Button
+            className="col-md-3"
+              htmlType="button"
+            >
               <DeleteOutlined />
             </Button>
           </Popconfirm>
@@ -183,19 +179,15 @@ const contact = () => {
           marginTop: "25px auto",
         }}
       >
-        <ContactsOutlined /> Contact
+        <ContactsOutlined/> Contact
       </div>
       <div>
         <hr></hr>
         <>
-          <CreateContactModal />
+          <CreateContactModal/>
         </>
-        <div style={{ marginRight: "1%" }}>
-          <Table
-            columns={columns}
-            dataSource={contactList}
-            onChange={onChange}
-          />
+        <div style={{marginRight: '1%'}}>
+          <Table columns={columns} dataSource={contactList} onChange={onChange} />
         </div>
       </div>
     </div>
