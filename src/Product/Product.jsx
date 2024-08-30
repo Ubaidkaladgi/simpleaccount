@@ -1,145 +1,113 @@
-import React from 'react';
-import { Table, Button } from 'antd';
-import {ProductOutlined } from  "@ant-design/icons";
-// import ContactModal from './CreateContactModal';
-// import CreateContactModal from './CreateContactModal';
+import React, { useState, useEffect } from 'react';
+import { Table } from 'antd';
+import { ProductOutlined } from "@ant-design/icons";
 import CreateProduct from './CreateProduct';
 import { getProductList } from './Action';
+
 const columns = [
   {
     title: 'Product Code',
-    dataIndex: 'Product_Code',
+    dataIndex: 'productCode', // Update based on API response
     sorter: true,
     width: '10%',
   },
   {
     title: 'Product Name',
-    dataIndex: 'Product_Name',
+    dataIndex: 'name', // Update based on API response
     sorter: {
-      compare: (a, b) => a.Product_Name.localeCompare(b.Product_Name),
+      compare: (a, b) => a.name.localeCompare(b.name),
       multiple: 5,
     },
     width: '15%',
   },
   {
     title: 'Product Type',
-    dataIndex: 'Product_Type',
+    dataIndex: 'productType', // Update based on API response
     sorter: {
-      compare: (a, b) => a.Product_Type.localeCompare(b.Product_Type),
+      compare: (a, b) => a.productType.localeCompare(b.productType),
       multiple: 4,
     },
     width: '10%',
   },
   {
     title: 'Inventory',
-    dataIndex: 'Inventory',
+    dataIndex: 'inventory', // Update based on API response
     sorter: {
-      compare: (a, b) => a.Inventory - b.Inventory,
+      compare: (a, b) => a.inventory - b.inventory,
       multiple: 3,
     },
     width: '10%',
   },
   {
     title: 'Unit Price',
-    dataIndex: 'Unit_Price',
+    dataIndex: 'unitPrice', // Update based on API response
     sorter: {
-      compare: (a, b) => a.Unit_Price - b.Unit_Price,
+      compare: (a, b) => a.unitPrice - b.unitPrice,
       multiple: 2,
     },
     width: '10%',
   },
   {
     title: 'VAT (%)',
-    dataIndex: 'VAT',
+    dataIndex: 'vat', // Update based on API response
     sorter: {
-      compare: (a, b) => a.VAT - b.VAT,
+      compare: (a, b) => a.vat - b.vat,
       multiple: 1,
     },
     width: '10%',
   },
   {
     title: 'Excise Slab',
-    dataIndex: 'Excise_Slab',
-    sorter: true,  // Assuming you want sorting based on some predefined slab values
+    dataIndex: 'exciseSlab', // Update based on API response
+    sorter: true,
     width: '15%',
   },
   {
     title: 'Status',
-    dataIndex: 'Status',
-    sorter: true,  // Assuming you want to sort based on status values
+    dataIndex: 'status', // Update based on API response
+    sorter: true,
     width: '10%',
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    Product_Code: 'P001',
-    Product_Name: 'Laptop',
-    Product_Type: 'Electronics',
-    Inventory: 50,
-    Unit_Price: 1200,
-    VAT: 15,
-    Excise_Slab: 'A',
-    Status: 'Available',
-  },
-  {
-    key: '2',
-    Product_Code: 'P002',
-    Product_Name: 'Smartphone',
-    Product_Type: 'Electronics',
-    Inventory: 150,
-    Unit_Price: 800,
-    VAT: 10,
-    Excise_Slab: 'B',
-    Status: 'Available',
-  },
-  {
-    key: '3',
-    Product_Code: 'P003',
-    Product_Name: 'Tablet',
-    Product_Type: 'Electronics',
-    Inventory: 80,
-    Unit_Price: 600,
-    VAT: 12,
-    Excise_Slab: 'B',
-    Status: 'Out of Stock',
-  },
-  {
-    key: '4',
-    Product_Code: 'P004',
-    Product_Name: 'Headphones',
-    Product_Type: 'Accessories',
-    Inventory: 120,
-    Unit_Price: 150,
-    VAT: 8,
-    Excise_Slab: 'C',
-    Status: 'Available',
-  },
-];
-
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
-
-
 const Product = () => {
-  getProductList();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getProductList();
+        // Access the nested data field
+        const productData = response.data.data;
+        if (Array.isArray(productData)) {
+          setData(productData);
+        } else {
+          console.error('Unexpected data format:', response.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra);
+  };
+
   return (
     <div>
-       <div  style={{color : '#2064d8' , marginRight: '85%', fontWeight : '500', fontSize: '135%', marginTop: '25px auto'}}><ProductOutlined /> Product</div>
-       <div>
-        <hr></hr>
-        <>
-        <CreateProduct/>
-        </>
-        <div>
-        <Table columns={columns} dataSource={data} onChange={onChange} /> 
-        </div>
-       </div>
+      <div style={{ color: '#2064d8', marginRight: '85%', fontWeight: '500', fontSize: '135%', marginTop: '25px auto' }}>
+        <ProductOutlined /> Product
+      </div>
+      <div>
+        <hr />
+        <CreateProduct />
+        <Table columns={columns} dataSource={data} onChange={onChange} />
+      </div>
     </div>
-  )
-}
-
+  );
+};
 
 export default Product;
