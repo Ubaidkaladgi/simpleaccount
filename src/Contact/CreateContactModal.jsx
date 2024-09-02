@@ -180,7 +180,7 @@ const CreateContactModal = () => {
         title={<><p style={{fontSize: "28px" , color:"#2064d8"}}>Add Contact</p> <hr></hr></>}
         footer={<></>}
         loading={loading}
-        width={1500}
+        width={1200}
         open={open}
         onCancel={() => {
           setOpen(false);

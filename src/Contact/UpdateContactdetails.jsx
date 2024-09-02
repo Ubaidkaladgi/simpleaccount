@@ -134,7 +134,7 @@ const UpdateContactModal = (contactId) => {
       await fetchBillingStatelist(contactData.countryId);
       form.setFieldValue("billingStateProvince", contactData.stateId);
       form.setFieldValue("billingPoBoxNumber", contactData.poBoxNumber);
-      form.setFieldValue("shippingPoBoxNumber", contactData.postZipCode);
+      form.setFieldValue("shippingPoBoxNumber", contactData.shippingPoBoxNumber);
       await fetchShippingStatelist(contactData.shippingCountryId);
 
     } catch (error) {
