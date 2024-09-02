@@ -99,6 +99,54 @@ export const getTransactionCategoryListForSalesProduct = (obj) => {
     )
 };
 
+export const getNextProductCode = () => {
+    const data = {
+        method: 'GET',
+        url: '/rest/customizeinvoiceprefixsuffix/getNextInvoiceNo',
+        params: { invoiceType: 9 }  // Adjust parameters as needed
+    };
+
+    return authApi(data)
+        .then((res) => {
+            // Assuming the response contains the next code in res.data.nextCode
+            return res.data.nextCode;
+        })
+        .catch((err) => {
+            throw err;
+        });
+};
+
+export const getTransactionCategoryListForPurchaseProduct= (obj) => {
+    let data = {
+        method: 'GET',
+        url: '/rest/product/getTransactionCategoryListForPurchaseProduct',
+    };
+    return (
+        authApi(data)
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                throw err;
+            })
+    )
+};
+
+export const getdeleteProduct = (id) => {
+    
+      let data = {
+        method: 'DELETE',
+        url: `/rest/product/delete?id=${id}`
+      }
+  
+      return authApi(data).then((res) => {
+        return res
+      }).catch((err) => {
+        throw err
+      })
+    
+  }
+
 
 
 
