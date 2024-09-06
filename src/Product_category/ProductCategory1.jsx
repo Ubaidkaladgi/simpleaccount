@@ -1,12 +1,26 @@
 
 
-
-import React from 'react'
+import { getProductCategoryDetails } from "./Action";
+import React, { useEffect, useState } from "react";
+import { Table} from "antd";
 
 export const ProductCategory1=()=> {
     const [productCategoryList, setProductCategoryList] = useState([]);
 
 
+    const fetchproductCategory = async () => {
+        try {
+          const res = await getProductCategoryDetails();
+          const productCategoryList = res.data;
+          setProductCategoryList(productCategoryList);
+          console.log(productCategoryList[0]);
+        } catch (error) {
+          console.error("Error fetching contact data:", error);
+        }
+      };
+    useEffect(() => {
+        fetchproductCategory();
+      }, []);
     const columns = [
         {
           title: "Product Category Name",
@@ -20,69 +34,17 @@ export const ProductCategory1=()=> {
           filterSearch: true,
         },
         {
-          title: "Contact Type",
-          dataIndex: "contactType",
-          sorter: {
-            compare: (a, b) => a.contactType - b.contactType,
-            multiple: 3,
+            title: "Product Category Code",
+            dataIndex: "prCode",
+            // sorter: true,
+            width: "20%",
+            filters: Array.from(
+              new Set(productCategoryList.map((productCategoryCode) => productCategoryCode.prCode))
+            ).map((name) => ({ text: name, value: name })),
+            onFilter: (value, record) => record.prCode.startsWith(value),
+            filterSearch: true,
           },
-          render: (value) => {
-            const type = contactType.find((type) => type.value === value);
-            return type ? type.label : "Unknown";
-          },
-        },
-        {
-          title: "Email",
-          dataIndex: "email",
-          sorter: {
-            compare: (a, b) => a.email.localeCompare(b.email),
-            multiple: 2,
-          },
-        },
-        {
-          title: "Status",
-          dataIndex: "isActive",
-          sorter: {
-            compare: (a, b) => a.isActive - b.isActive,
-            multiple: 1,
-          },
-          render: (isActive) => <span>{isActive ? "Active" : "Inactive"}</span>,
-        },
-        {
-          title: "Action",
-          dataIndex: "",
-          key: "x",
-          render: (text, record) => (
-            <div
-              className="row"
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "10px",
-              }}
-            >
-               <UpdateContactModal contactId={record.contactId} />
-               
-              <Popconfirm
-                title="Are you sure to delete this contact?"
-                onConfirm={() => confirm(record.contactId)}
-                onCancel={()=>{cancel
-                  console.log(record)
-                }}
-                okText="Yes"
-                cancelText="No"
-                
-              >
-                <Button
-                className="col-md-3"
-                  htmlType="button"
-                >
-                  <DeleteOutlined />
-                </Button>
-              </Popconfirm>
-            </div>
-          ),
-        },
+        
       ];
 
 
@@ -97,15 +59,12 @@ export const ProductCategory1=()=> {
           marginTop: "25px auto",
         }}
       >
-        <ContactsOutlined/> Contact
       </div>
       <div>
         <hr></hr>
-        <>
-          <CreateContactModal/>
-        </>
+        
         <div style={{marginRight: '1%'}}>
-          <Table columns={columns} dataSource={productCategoryList} onChange={onChange} />
+          <Table columns={columns} dataSource={productCategoryList}  />
         </div>
       </div>
     </div>
