@@ -4,7 +4,7 @@ import { getProductCategoryDetails } from "./Action";
 import React, { useEffect, useState } from "react";
 import { Table} from "antd";
 
-export const ProductCategory1=()=> {
+export const ProductCategory1 = ()=> {
     const [productCategoryList, setProductCategoryList] = useState([]);
 
 
@@ -18,9 +18,11 @@ export const ProductCategory1=()=> {
           console.error("Error fetching contact data:", error);
         }
       };
+
     useEffect(() => {
         fetchproductCategory();
       }, []);
+
     const columns = [
         {
           title: "Product Category Name",
