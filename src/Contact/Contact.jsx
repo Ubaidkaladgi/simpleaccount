@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, message, Popconfirm } from "antd";
+import { Table, Button, message, Popconfirm,Tag} from "antd";
 import {
   ContactsOutlined,
   EditOutlined,
@@ -137,7 +137,10 @@ const contact = () => {
         compare: (a, b) => a.isActive - b.isActive,
         multiple: 1,
       },
-      render: (isActive) => <span>{isActive ? "Active" : "Inactive"}</span>,
+      render: (isActive) =>
+      <Tag color={isActive ? 'green' : 'red'}>
+          {isActive ? 'Active' : 'Inactive'}
+        </Tag>
     },
     {
       title: "Action",

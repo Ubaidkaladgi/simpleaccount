@@ -34,6 +34,9 @@ import { getCompanyDetails } from "../login/Action";
 import CountryDetails from "../countryDetails/countryDetails";
 import Contact from "../Contact/Contact";
 import Product from "../Product/Product";
+import Chart_of_accounts from "../coa_category/Chart_of_accounts";
+// import ProductCategory from "../Product_category/ProductCategory1";
+// import ProductCategory1 from "../Product_category/ProductCategory1";
  
 const { Header, Content, Sider, Footer } = Layout;
  
@@ -89,6 +92,8 @@ const items2 = [
     label: "Master",
     children: [{ key: "9", label: "Contact" },
       { key: "10", label: "Product" },
+      { key: "11", label: "Chart of Accounts" },
+      { key: "12", label: "Product Category" },
     ],
   },
 ];
@@ -343,6 +348,12 @@ const Dashboard = () => {
             <div className="content">
               {activeMenuKey === "10" ? <><Product/></> : ""}
             </div>
+             <div className="content">
+              {activeMenuKey === "11" ? <><Chart_of_accounts/></> : ""}
+            </div>
+            {/* <div className="content">
+              {activeMenuKey === "11" ? <><ProductCategory1/></> : ""}
+            </div> */}
           </Content>
           <Footer style={{ textAlign: 'center' }}>
           Simple Accounts ©{new Date().getFullYear()} By DataInnovations

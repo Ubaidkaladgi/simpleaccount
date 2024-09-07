@@ -56,7 +56,7 @@ const CreateContactModal = () => {
 
     try {
       await save(processedValues);
-      message.success("Save successful");
+      message.success("Contact Saved successful");
       setOpen(false);
     } catch (err) {
       message.error(err?.obj ? "Save failed." : "Something went wrong");
@@ -368,6 +368,7 @@ const CreateContactModal = () => {
                         "Tax Treatment Number must be up to 15 digits long and contain only numbers",
                     },
                   ]}
+                  validateTrigger={['onChange']}
                 >
                   <Input placeholder="Enter Tax Treatment Number" />
                 </Form.Item>

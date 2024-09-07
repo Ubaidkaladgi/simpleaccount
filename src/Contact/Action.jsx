@@ -71,7 +71,7 @@ export const getTaxTreatment = () => {
         url: '/rest/datalist/getTaxTreatment',
     };
     return (
-        authApi(data)
+        authApi(data)    
             .then((res) => {
                 return res;
             })
@@ -160,4 +160,21 @@ export const getUpdateContact = (contactId) => {
                 throw err;
             })
     )
+};
+
+export const Update =  (obj) => {
+    let data = {
+        method: 'POST',
+        url: '/rest/contact/update',
+        data: obj,
+    };
+  return (  
+      authApi(data)
+          .then((res) => {
+              return res;
+          })
+          .catch((err) => {
+              throw err;
+          })
+        )
 };

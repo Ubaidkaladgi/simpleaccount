@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Checkbox, Form, Input, Radio, Select, Modal } from "antd";
+import { Button, Checkbox, Form, Input, Radio, Select, Modal,message } from "antd";
 import {
   getActiveCurrencyConversion,
   getContactTypes,
@@ -8,7 +8,7 @@ import {
   getState,
   getTaxTreatment,
   getUpdateContact,
-  save,
+  Update,
 } from "./Action";
 import { EditOutlined } from "@ant-design/icons";
 
@@ -25,6 +25,8 @@ const UpdateContactModal = (contactId) => {
   const [currency, setcurrency] = useState([]);
   const [contactType, setcontactType] = useState([]);
   const [isAddressSame, setIsAddressSame] = useState(false);
+   const [messageApi, contextHolder] = message.useMessage();
+  const key = "updatable";
 
   const preprocessFormValues = (values) => {
     const processValue = (value) => {
@@ -45,21 +47,44 @@ const UpdateContactModal = (contactId) => {
 
   const onFinish = async (values) => {
     const processedValues = preprocessFormValues(values);
-
-    console.log("Processed Form values:", processedValues);
-
-    // try {
-    //   await save(processedValues);
-    //   message.success("Save successful");
-    // } catch (err) {
-    //   message.error(err?.obj ? "Save failed." : "Something went wrong");
-    // }
+  
+    // Add contactId to the processedValues object
+    const dataToSubmit = {
+      ...processedValues,
+      contactId: contactId.contactId, // Add contactId here
+    };
+  
+    console.log("Processed Form values with contactId:", dataToSubmit);
+  
+    try {
+      await Update(dataToSubmit);
+      message.success("Contact Updated successful");
+    } catch (err) {
+      message.error(err?.obj ? "Save failed." : "Something went wrong");
+    }
   };
+  
   const showLoading = () => {
     setOpen(true);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+    }, 1000);
+  };
+
+  const openMessage = () => {
+    messageApi.open({
+      key,
+      type: "loading",
+      content: "Loading...",
+    });
+    setTimeout(() => {
+      messageApi.open({
+        key,
+        type: "success",
+        content: "Loaded!",
+        duration: 2,
+      });
     }, 1000);
   };
 
@@ -578,8 +603,11 @@ const UpdateContactModal = (contactId) => {
                   gap: "10px",
                 }}
               >
-                <Button className="col-md-2" shape="round" type="primary" htmlType="submit">
-                  Create
+                <Button className="col-md-2" shape="round" type="primary" htmlType="submit"
+                onClick={() => {setOpen(false);
+                  openMessage();
+                }}>
+                  Update
                 </Button>
                 <Button
                   className="col-md-2"
