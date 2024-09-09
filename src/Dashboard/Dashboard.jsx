@@ -20,6 +20,7 @@ import {
   Card,
   Row,
   Col,
+  ConfigProvider,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import "./Dashboard.css";
@@ -37,6 +38,10 @@ import Product from "../Product/Product";
 import Chart_of_accounts from "../coa_category/Chart_of_accounts";
 // import ProductCategory from "../Product_category/ProductCategory1";
 // import ProductCategory1 from "../Product_category/ProductCategory1";
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import {Switch } from 'antd';
+
+
  
 const { Header, Content, Sider, Footer } = Layout;
  
@@ -156,7 +161,7 @@ const columns = [
   },
 ];
  
-const Dashboard = () => {
+const Dashboard = (mode) => {
   const navigate = useNavigate();
  
   useEffect(() => {
@@ -182,6 +187,7 @@ const Dashboard = () => {
       try {
         const response = await getCurrency();
         setData(response.data);
+        console.log(mode,"darkMode");
       } catch (error) {
         console.error("Failed to fetch currency data:", error);
       }
@@ -199,6 +205,7 @@ const Dashboard = () => {
  
   const handleMenuClick = (e) => {
     setActiveMenuKey(e.key);
+  
   };
   const handleUserClick = (e) => {
     message.info("Clicked on User item.");
@@ -210,8 +217,22 @@ const Dashboard = () => {
     onClick: handleUserClick,
   };
  
+  // Theme 
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { defaultAlgorithm, darkAlgorithm } = theme;
+
+  const handleClick = () => {
+    setIsDarkMode((previousValue) => !previousValue);
+  };
+
+
+
+
   return (
-    <Layout>
+    
+      <ConfigProvider theme={{ algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm }}>
+      <Layout>
+      <div className={`app-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <Header
         style={{
           display: "flex",
@@ -219,6 +240,7 @@ const Dashboard = () => {
           justifyContent: "space-between",
           backgroundColor: "white",
           padding: "0 20px",
+          backgroundColor: isDarkMode ? "black" : "white",
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -239,7 +261,9 @@ const Dashboard = () => {
             style={{ marginLeft: "16px" }}
           />
         </div>
- 
+        <Switch checkedChildren="☀" unCheckedChildren="🌙" defaultChecked  style={{marginLeft:'60%'}} onClick={handleClick} >
+          Change Theme to {isDarkMode ? 'Light' : 'Dark'}
+          </Switch>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Dropdown menu={menuProps}>
             <Button className="button">
@@ -311,7 +335,7 @@ const Dashboard = () => {
               minHeight: 800,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
-             
+              backgroundColor: isDarkMode ? "black" : "white",
             }}
           >
              <div className="content"> {activeMenuKey === "7" ?
@@ -360,7 +384,9 @@ const Dashboard = () => {
         </Footer>
         </Layout>
       </Layout>
-    </Layout>
+      </div>
+      </Layout>
+      </ConfigProvider>
   );
 };
 export default Dashboard;
