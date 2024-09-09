@@ -170,3 +170,35 @@ export const save =  (obj) => {
 };
 
 
+export const updateProduct = (obj) => {
+    let data = {
+      method: 'POST',
+      url: `/rest/product/update`,
+      data: obj
+    };
+  
+    return authApi(data)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+  
+  export const getProductById = (id) => {
+    let data = {
+      method: 'GET',
+      url: `/rest/product/getProductById?id=${id}`
+    };
+  
+    return authApi(data)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+  
+
