@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, message, Popconfirm, Tag } from 'antd';
-import { ProductOutlined, DeleteOutlined } from "@ant-design/icons";
+import { ProductOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons"; // Import EditOutlined
 import CreateProduct from './CreateProduct';
 import { getProductList, getdeleteProduct } from './Action';
+import UpdateProductForm from './UpdateProductForm';
 // import {UpdateProduct} from './UpdateProduct'
 
 const Product = () => {
@@ -50,6 +51,11 @@ const Product = () => {
 
   const cancel = (e) => {
     console.log(e);
+  };
+
+  const handleEdit = (id) => {
+    // Implement your edit functionality here, e.g., open a modal with the form
+    console.log("Edit Product ID:", id);
   };
 
   const columns = [
@@ -126,7 +132,13 @@ const Product = () => {
             gap: "10px",
           }}
         >
-          {/* <UpdateProduct contactId={record.contactId} /> */}
+          
+          
+            
+            <UpdateProductForm id={record.id} />
+         
+
+          {/* Delete Button */}
           <Popconfirm
             title="Are you sure to delete this Product?"
             onConfirm={() => confirm(record.id)}
