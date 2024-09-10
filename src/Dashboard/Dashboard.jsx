@@ -261,7 +261,7 @@ const Dashboard = (mode) => {
             style={{ marginLeft: "16px" }}
           />
         </div>
-        <Switch checkedChildren="☀" unCheckedChildren="🌙" defaultChecked  style={{marginLeft:'60%'}} onClick={handleClick} >
+        <Switch checkedChildren="🌞" unCheckedChildren="🌙" defaultChecked  style={{marginLeft:'60%'}} onClick={handleClick} >
           Change Theme to {isDarkMode ? 'Light' : 'Dark'}
           </Switch>
         <div style={{ display: "flex", alignItems: "center" }}>
