@@ -54,7 +54,7 @@ const Product = () => {
   };
 
   const handleEdit = (id) => {
-    // Implement your edit functionality here, e.g., open a modal with the form
+    
     console.log("Edit Product ID:", id);
   };
 
@@ -100,19 +100,19 @@ const Product = () => {
     {
       title: 'VAT (%)',
       dataIndex: 'vatPercentage',
-      sorter: (a, b) => a.vatPercentage - b.vatPercentage,
+      // sorter: (a, b) => a.vatPercentage - b.vatPercentage,
       width: '10%',
     },
     {
       title: 'Excise Slab',
       dataIndex: 'exciseTax',
-      sorter: true,
+      // sorter: true,
       width: '15%',
     },
     {
       title: 'Status',
       dataIndex: 'isActive',
-      sorter: true,
+      // sorter: true,
       width: '10%',
       render: (isActive) => (
         <Tag color={isActive ? 'green' : 'red'}>

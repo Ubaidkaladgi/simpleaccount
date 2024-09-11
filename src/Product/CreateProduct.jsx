@@ -148,10 +148,10 @@ const CreateProductForm = () => {
             unitTypeId: values.unitTypeId,
             productCategoryId: values.productCategoryId,
             isActive: values.isActive,
-            exciseTaxCheck: exciseEnabled, // Based on the excise checkbox
+            exciseTaxCheck: exciseEnabled,
             exciseTaxId: exciseEnabled ? values.exciseTaxType : "",
-            isInventoryEnabled: InventoryEnabled, // Based on the inventory checkbox
-            transactionCategoryId: InventoryEnabled ? values.inventoryAccountId : "", // Assuming inventory account ID is stored here
+            isInventoryEnabled: InventoryEnabled, 
+            transactionCategoryId: InventoryEnabled ? values.inventoryAccountId : "",
             salesTransactionCategoryId: salesInfoEnabled ? values.salesTransactionCategoryId : "",
             salesUnitPrice: salesInfoEnabled ? values.salesUnitPrice : "",
             purchaseTransactionCategoryId: purchaseInfoEnabled ? values.purchaseTransactionCategoryId : "",
