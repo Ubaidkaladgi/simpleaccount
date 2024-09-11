@@ -17,6 +17,22 @@ export const getContactList = () => {
     )
 };
 
+export const getVatCategory = () => {
+    let data = {
+        method: 'GET',
+        url: '/rest/vat/getList',
+    };
+    return (
+        authApi(data)
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                throw err;
+            })
+    )
+};
+
 export const getcountry = () => {
     let data = {
         method: 'GET',

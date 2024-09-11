@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import ContactModal from "./CreateContactModal";
 import CreateContactModal from "./CreateContactModal";
-import { getdeleteContact, getContactCouunt, getContactList, getContactTypes } from "./Action";
+import { getdeleteContact, getContactCouunt, getContactList, getContactTypes, getVatCategory } from "./Action";
 import UpdateContactModal from "./UpdateContactdetails";
 
 const onChange = (pagination, filters, sorter, extra) => {
@@ -17,6 +17,7 @@ const onChange = (pagination, filters, sorter, extra) => {
 const contact = () => {
   const [contactList, setContact] = useState([]);
   const [contactType, setcontactType] = useState([]);
+  const [vat, setVat] = useState([]);
   const [contactCount, setContactCount] = useState([]);
   const [deleteConatct, setDeleteContact] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
@@ -69,6 +70,16 @@ const contact = () => {
     }
   };
 
+  const fetchVatCategory = async () => {
+    try {
+      const res = await getVatCategory();
+      const vat = res.data;
+      setVat(vat);
+    } catch (error) {
+      console.error("Error fetching contact count:", error);
+    }
+  };
+
   const openMessage = () => {
     messageApi.open({
       key,
@@ -88,6 +99,7 @@ const contact = () => {
   useEffect(() => {
     fetchContact();
     fetchContactType();
+    fetchVatCategory();
   }, []);
 
   

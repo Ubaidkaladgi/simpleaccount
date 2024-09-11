@@ -98,7 +98,6 @@ const items2 = [
     children: [{ key: "9", label: "Contact" },
       { key: "10", label: "Product" },
       { key: "11", label: "Chart of Accounts" },
-      { key: "12", label: "Product Category" },
     ],
   },
 ];
