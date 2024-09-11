@@ -58,6 +58,7 @@ const CreateContactModal = () => {
       await save(processedValues);
       message.success("Contact Saved successful");
       setOpen(false);
+      window.location.reload();
     } catch (err) {
       message.error(err?.obj ? "Save failed." : "Something went wrong");
     }
