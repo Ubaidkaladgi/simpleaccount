@@ -237,7 +237,7 @@ const Dashboard = (mode) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "white",
+          // backgroundColor: "white",
           padding: "0 20px",
           backgroundColor: isDarkMode ? "black" : "white",
         }}
