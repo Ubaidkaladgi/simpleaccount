@@ -244,9 +244,10 @@ const CreateProductForm = () => {
                 <Form.Item
                   label="Product Name"
                   name="productName"
+                   
                   rules={[{ required: true, message: 'This field is required' }]}
                 >
-                  <Input disabled={componentDisabled} />
+                  <Input placeholder="Product Name" disabled={componentDisabled} />
                 </Form.Item>
               </div>
               <div className="col-md-2">
@@ -270,7 +271,7 @@ const CreateProductForm = () => {
                   name="productCode"
                   rules={[{ required: true, message: 'This field is required' }]}
                 >
-                  <Input disabled={componentDisabled} />
+                  <Input placeholder="Product Code" disabled={componentDisabled} />
                 </Form.Item>
               </div>
               <div className="col-md-2">
@@ -338,7 +339,8 @@ const CreateProductForm = () => {
                   name="salesUnitPrice"
                   rules={salesInfoEnabled ? [{ required: true, message: 'This field is required' }] : []}
                 >
-                  <Input disabled={!salesInfoEnabled} />
+                  <Input placeholder=" Enter Selling Price"
+                  disabled={!salesInfoEnabled} />
                 </Form.Item>
               </div>
               <div className="col-md-6">
@@ -347,7 +349,7 @@ const CreateProductForm = () => {
                   name="salesTransactionCategoryId"
                   rules={salesInfoEnabled ? [{ required: true, message: 'This field is required' }] : []}
                 >
-                  <Select disabled={!salesInfoEnabled}>
+                  <Select placeholder="Select Sales Accounts" disabled={!salesInfoEnabled}>
                     {salesAccountsData.map((option) => (
                       <Select.Option key={option.value} value={option.value}>
                         {option.label}
@@ -361,7 +363,8 @@ const CreateProductForm = () => {
             <div className="row">
               <div className="col-md-4">
                 <Form.Item label="Description" name="salesDescription">
-                  <Input disabled={!salesInfoEnabled} />
+                  <Input  placeholder="Description"
+                  disabled={!salesInfoEnabled} />
                 </Form.Item>
               </div>
             </div>
@@ -382,7 +385,7 @@ const CreateProductForm = () => {
                   name="purchaseUnitPrice"
                   rules={purchaseInfoEnabled ? [{ required: true, message: 'This field is required' }] : []}
                 >
-                  <Input disabled={!purchaseInfoEnabled} />
+                  <Input placeholder="Enter Purchase Price" disabled={!purchaseInfoEnabled} />
                 </Form.Item>
               </div>
               <div className="col-md-6">
@@ -391,7 +394,7 @@ const CreateProductForm = () => {
     name="purchaseTransactionCategoryId" 
     rules={purchaseInfoEnabled ? [{ required: true, message: 'This field is required' }] : []}
   >
-    <Select disabled={!purchaseInfoEnabled}>
+    <Select  placeholder="Select Purchase Accounts" disabled={!purchaseInfoEnabled}>
       {PurchaseAccountsData.map((option) => (
         <Select.Option key={option.value} value={option.value}>
           {option.label}
@@ -405,7 +408,7 @@ const CreateProductForm = () => {
             <div className="row">
               <div className="col-md-4">
                 <Form.Item label="Description" name="purchaseDescription">
-                  <Input disabled={!purchaseInfoEnabled} />
+                  <Input placeholder="Description" disabled={!purchaseInfoEnabled} />
                 </Form.Item>
               </div>
             </div>
