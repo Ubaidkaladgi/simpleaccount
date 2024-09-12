@@ -308,7 +308,7 @@ const UpdateProductForm = ({ id }) => {
                   name="productCode"
                   rules={[{ required: true, message: 'This field is required' }]}
                 >
-                  <Input disabled={componentDisabled} />
+                  <Input disabled/>
                 </Form.Item>
               </div>
               <div className="col-md-2">

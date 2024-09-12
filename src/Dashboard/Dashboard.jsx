@@ -50,11 +50,11 @@ const items1 = ["1", "2", "3"].map((key) => ({
 }));
  
 const items2 = [
-  { key: "sub1", icon: <DashboardOutlined />, label: "DashBoard",
-    children: [
-      { key: "7", label: " Dashboard" },
-    ],
-   },
+  // { key: "sub1", icon: <DashboardOutlined />, label: "DashBoard",
+  //   children: [
+  //     { key: "7", label: " Dashboard" },
+  //   ],
+  //  },
  
   // {
   //   key: "sub2",
@@ -337,7 +337,7 @@ const Dashboard = (mode) => {
               backgroundColor: isDarkMode ? "black" : "white",
             }}
           >
-             <div className="content"> {activeMenuKey === "7" ?
+             {/* <div className="content"> {activeMenuKey === "7" ?
              <>
              <div><Row>
               <Col span={24}><Card><DemoLine /></Card></Col>
@@ -354,7 +354,7 @@ const Dashboard = (mode) => {
             </div>
             </div>
              </>
-             : ""}</div>
+             : ""}</div> */}
             <div className="content">
               {activeMenuKey === "6" ? (
                 <Table columns={columns} dataSource={data} />

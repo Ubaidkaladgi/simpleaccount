@@ -14,7 +14,7 @@ const App = () => {
       dataIndex: 'transactionCategoryName',
       // defaultSortOrder: 'descend',
       // onFilter: (value, record) => record.transactionCategoryName.indexOf(value) === 0,
-      // sorter: (a, b) => a.transactionCategoryName.length - b.transactionCategoryName.length,
+      sorter: (a, b) => a.transactionCategoryName.length - b.transactionCategoryName.length,
       // sortDirections: ['descend'],
     },
     {
@@ -28,7 +28,7 @@ const App = () => {
         compare: (a, b) => a.editableFlag - b.editableFlag,
         multiple: 2,
       },
-      defaultSortOrder: 'descend',
+      // defaultSortOrder: 'descend',
       render: (editableFlag) => (
         <Tag color={editableFlag ? 'green' : 'red'}>
           {editableFlag ? 'Unlocked' : 'Locked'}
@@ -66,9 +66,10 @@ const App = () => {
           fontWeight: "500",
           fontSize: "135%",
           marginTop: "25px",
+          width:"500px"
         }}
       >
-        <BookTwoTone /> COA
+        <BookTwoTone /> Chart Of Accounts
       </div>
       <div>
         <hr />
